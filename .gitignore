@@ -1,3 +1,7 @@
+WebShare/bin
+WebShare/bld
+*.pfx
+
 # Logs
 logs
 *.log

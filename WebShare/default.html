@@ -1,0 +1,39 @@
+﻿<!DOCTYPE html>
+<html class="borderless fill">
+<head>
+    <meta charset="utf-8" />
+    <title>Web Share</title>
+
+    <!-- WinJS references -->
+    <link href="//Microsoft.WinJS.2.0/css/ui-light.css" rel="stylesheet" />
+    <script src="//Microsoft.WinJS.2.0/js/base.js"></script>
+    <script src="//Microsoft.WinJS.2.0/js/ui.js"></script>
+
+    <!-- WebShare references -->
+    <link href="/css/default.css" rel="stylesheet" />
+    <script src="/js/uriTemplate.js"></script>
+    <script src="/js/activity.js"></script>
+    <script src="/js/activityStore.js"></script>
+    <script src="/js/activityRunner.js"></script>
+    <script src="/js/shareState.js"></script>
+    <script src="/js/default.js"></script>
+</head>
+<body class="table-layout borderless fill logo-background-color">
+    <header class="hidden-on-share table-top">
+        <h1>Web Share</h1>
+    </header>
+    <section class="table-middle">
+        <input class="win-searchbox" type="search" placeholder="Filter, search or add activity" /><br />
+        <div id="activityList" data-win-control="WinJS.UI.Repeater">
+            <div class="activity" data-win-bind="name: id">
+                <img class="icon" data-win-bind="src: imageUri" />
+                <span class="name" data-win-bind="textContent: name"></span>
+            </div>
+        </div>
+    </section>
+    <section class="table-bottom">
+        <x-ms-webview class="fill" style="display: none;" id="activityOutput"></x-ms-webview>
+        <progress id="activityOutputProgress" class="fill" style="display: none;"></progress>
+    </section>
+</body>
+</html>
