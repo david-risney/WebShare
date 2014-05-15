@@ -2,7 +2,7 @@
     var that = this,
         list = new WinJS.Binding.List(),
         id = 0,
-        loadDefault = function () {
+        loadDefault = function (list) {
             list.push(new Activity({
                 type: Activity.types.document,
                 id: "" + (id++),
@@ -24,7 +24,7 @@
                 backgroundColor: "#00aced",
                 usageCount: .5
             }));
-            
+
             // https://developers.google.com/+/web/share/
             list.push(new Activity({
                 type: Activity.types.document,
@@ -120,25 +120,45 @@
             }));
             */
         },
-        normalizeActivityList = function () {
-            list.sort(function (left, right) { return (left.usageCount || 0) - (right.usageCount || 0); });
+        normalizeList = function (list) {
+            list.sort(function (left, right) { return -((left.usageCount || 0) - (right.usageCount || 0)); });
+        },
+        clearList = function (list) {
+            list.splice(0, list.length);
         };
 
-
-    // stumbleupon, reddit, google+
     this.initializeAsync = function () {
         return that.loadAsync();
     };
     this.saveAsync = function () {
-        return WinJS.Promise.wrap();
+        var storageFile,
+            serializedStateAsJson = JSON.stringify(list.map(function (item) {
+            return item.serialize();
+        }));
+        return Windows.Storage.ApplicationData.current.roamingFolder.createFileAsync("activities.json", Windows.Storage.CreationCollisionOption.replaceExisting).then(function (storageFileIn) {
+            storageFile = storageFileIn;
+            return Windows.Storage.FileIO.writeTextAsync(storageFile, serializedStateAsJson);
+        });
     };
     this.loadAsync = function () {
-        loadDefault();
-        return WinJS.Promise.wrap();
+        console.log(Windows.Storage.ApplicationData.current.roamingFolder.path);
+        return Windows.Storage.ApplicationData.current.roamingFolder.getItemAsync("activities.json").then(function (storageFile) {
+            return Windows.Storage.FileIO.readTextAsync(storageFile);
+        }).then(function (serializedStateAsJson) {
+            var newList = JSON.parse(serializedStateAsJson).map(Activity.deserialize);
+            normalizeList(newList);
+
+            clearList(list);
+            newList.forEach(function (activity) {
+                list.push(activity);
+            });
+        }).then(undefined, function() {
+            return that.resetAsync();
+        });
     };
     this.resetAsync = function () {
-        list.splice(0, list.length);
-        loadDefault();
+        clearList(list);
+        loadDefault(list);
         return that.saveAsync();
     };
     this.getItems = function () {
@@ -151,7 +171,7 @@
     };
     this.noteItemUsage = function (id) {
         that.getItemById(id).usageCount++;
-        // normalizeActivityList();
+        // normalizeList(list);
         that.saveAsync();
     };
 };
