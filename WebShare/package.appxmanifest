@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="264f396d-20d4-4170-af20-d1c0e70d5280" Version="1.0.0.0" Publisher="CN=Dave" />
+  <Identity Name="WebShare" Version="1.0.0.0" Publisher="CN=Dave" />
   <Properties>
     <DisplayName>WebShare</DisplayName>
     <PublisherDisplayName>Dave</PublisherDisplayName>
@@ -15,7 +15,14 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <m2:VisualElements DisplayName="WebShare" Description="WebShare" ForegroundText="light" BackgroundColor="#464646" Square150x150Logo="images\Logo.png" Square30x30Logo="images\SmallLogo.png">
+      <m2:VisualElements DisplayName="WebShare" Description="WebShare" ForegroundText="light" BackgroundColor="#67DB84" Square150x150Logo="images\Square150x150Logo.png" Square30x30Logo="images\Square30x30Logo.png">
+        <m2:DefaultTile ShortName="WebShare" Square310x310Logo="images\Square310x310Logo.png" DefaultSize="square150x150Logo" Wide310x150Logo="images\Wide310x150Logo.png" Square70x70Logo="images\Square70x70Logo.png">
+          <m2:ShowNameOnTiles>
+            <m2:ShowOn Tile="square150x150Logo" />
+            <m2:ShowOn Tile="wide310x150Logo" />
+            <m2:ShowOn Tile="square310x310Logo" />
+          </m2:ShowNameOnTiles>
+        </m2:DefaultTile>
         <m2:SplashScreen Image="images\splashscreen.png" BackgroundColor="#67DB84" />
       </m2:VisualElements>
       <Extensions>

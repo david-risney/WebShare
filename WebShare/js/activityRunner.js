@@ -6,9 +6,25 @@
             states[name] = name;
             return states;
         }, {}),
+        shareState,
+        selectedActivityId,
         removeActivityOutputStateChangeHandler,
         runningActivity = false,
         activityOutputState = activityOutputStates.hidden,
+        updateActivityElement = function (activityElement) {
+            var hide = false;
+            if (activityOutputState !== activityOutputStates.hidden) {
+                if (selectedActivityId !== undefined && activityElement.getAttribute("name") !== selectedActivityId) {
+                    hide = true;
+                }
+            }
+            if (hide) {
+                activityElement.classList.add("activity-hide");
+            }
+            else {
+                activityElement.classList.remove("activity-hide");
+            }
+        },
         unhideActivities = function () {
             Array.prototype.forEach.call(activityList.element.querySelectorAll("#activityList > *"), function (activity) {
                 activity.classList.remove("activity-hide");
@@ -66,7 +82,8 @@
             if (runningActivity) {
                 hideNonSelectedActivities(event.currentTarget);
                 transitionToActivityOutputState(activityOutputStates.loading);
-                activityOutput.src = activityStore.getItemById(activityId).toUri({ uri: "http://deletethis.net/dave/" });
+                activityOutput.src = activityStore.getItemById(activityId).toUri(shareState);
+                activityStore.noteItemUsage(activityId);
             }
             else {
                 unhideActivities();
@@ -74,9 +91,10 @@
             }
         };
 
-    this.initializeAsync = function (activityStoreIn, activityListIn, activityOutputIn) {
+    this.initializeAsync = function (shareStateIn, activityStoreIn, activityListIn, activityOutputIn) {
         var addClickHandler = function (item) { item.addEventListener("click", activityClickHandler); };
 
+        shareState = shareStateIn;
         activityStore = activityStoreIn;
         activityList = activityListIn;
         activityOutput = activityOutputIn;
@@ -84,10 +102,12 @@
         activityList.onitemsloaded = function (detail) {
             Array.prototype.forEach.call(detail.target.children, function (child) {
                 addClickHandler(child);
+                updateActivityElement(child);
             });
         }
         activityList.oniteminserted = function (detail) {
             addClickHandler(detail.affectedElement);
+            updateActivityElement(detail.affectedElement);
         };
     };
 };

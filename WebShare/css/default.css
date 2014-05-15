@@ -1,4 +1,20 @@
-﻿.logo-background-color {
+﻿body.app-container {
+    padding-top: 15px;
+    padding-left: 120px;
+    padding-bottom: 50px;
+}
+
+html.share body.app-container {
+    padding-left: 40px;
+    padding-right: 16px;
+    padding-bottom: 10px;
+}
+
+header {
+    padding-bottom: 40px;
+}
+
+.logo-background-color {
     background: #67DB84;
 }
 
@@ -11,6 +27,15 @@
 .fill {
     width: 100%;
     height: 100%;
+}
+
+x-ms-webview {
+    padding-top: 20px;
+}
+
+x-ms-webview.fill {
+    width: calc(100% - 56px);
+    height: calc(100% - 10px);
 }
 
 .table-layout {
@@ -35,7 +60,7 @@
 }
 
 .activity {
-
+    padding-top: 20px;
 }
 
 .activity-hide {
@@ -44,8 +69,14 @@
 
 .activity .icon {
     max-height: 40px;
+    margin-right: 14px;
+    float: left;
 }
 
 .activity .name {
     vertical-align: middle;
+}
+
+html.share header {
+    display: none;
 }

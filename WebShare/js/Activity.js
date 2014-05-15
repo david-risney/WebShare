@@ -4,8 +4,11 @@
     this.type = activityState.type;
     this.id = activityState.id;
     this.name = activityState.name;
+    this.description = activityState.description;
     this.imageUri = activityState.imageUri;
+    this.backgroundColor = activityState.backgroundColor;
     this.uriTemplate = activityState.uriTemplate;
+    this.usageCount = activityState.usageCount || 0;
 
     this.serialize = function () { return this; };
 

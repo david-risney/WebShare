@@ -12,9 +12,7 @@
 
     app.onactivated = function (args) {
         if (args.detail.kind === activation.ActivationKind.shareTarget) {
-            Array.prototype.forEach.call(document.querySelectorAll(".hidden-on-share"), function (hide) {
-                hide.style.display = "none";
-            });
+            document.body.parentElement.classList.add("share");
         }
 
         args.setPromise(activityStore.initializeAsync().then(function () {
@@ -24,6 +22,7 @@
         }).then(function() {
             activityList = document.getElementById("activityList").winControl;
             return activityRunner.initializeAsync(
+                shareState,
                 activityStore,
                 activityList,
                 document.getElementById("activityOutput"));
