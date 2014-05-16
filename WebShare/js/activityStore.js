@@ -171,7 +171,7 @@
     };
     this.noteItemUsage = function (id) {
         that.getItemById(id).usageCount++;
-        // normalizeList(list);
+        normalizeList(list);
         that.saveAsync();
     };
 };

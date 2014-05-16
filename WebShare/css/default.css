@@ -1,32 +1,57 @@
-﻿body.app-container {
+﻿html.share body.app-container {
+    padding-left: 40px;
+    padding-right: 16px;
+    padding-bottom: 10px;
+}
+
+body.app-container {
     padding-top: 15px;
     padding-left: 120px;
     padding-bottom: 50px;
 }
 
-html.share body.app-container {
-    padding-left: 40px;
-    padding-right: 16px;
-    padding-bottom: 10px;
+html.share header {
+    display: none;
 }
 
 header {
     padding-bottom: 40px;
 }
 
-.logo-background-color {
-    background: #67DB84;
+
+.activity {
+    padding-top: 20px;
 }
 
-.borderless {
-    border: 0;
-    margin: 0;
-    padding: 0;
+html.selected .activity {
+    display: none;
+}
+html.selected .activity.selected {
+    display: inherit;
+}
+[data-section = "selection"] {
+    display: none;
+}
+html.selected [data-section = "selection"] {
+    display:block;
 }
 
-.fill {
-    width: 100%;
-    height: 100%;
+.activity .icon {
+    max-height: 40px;
+    margin-right: 14px;
+    float: left;
+}
+
+.activity .name {
+    vertical-align: middle;
+}
+
+x-ms-webview {
+    display: none;
+}
+
+html.selected x-ms-webview {
+    display: block;
 }
 
 x-ms-webview {
@@ -59,24 +84,43 @@ x-ms-webview.fill {
     -ms-grid-row: 3;
 }
 
-.activity {
-    padding-top: 20px;
+.two-column-table {
+    display: -ms-grid;
+    -ms-grid-columns: auto auto;
+    -ms-grid-rows: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
 
-.activity-hide {
-    display: none;
+.two-column-table > * {
+    display: block;
+    position: relative;
 }
 
-.activity .icon {
-    max-height: 40px;
-    margin-right: 14px;
-    float: left;
+.two-column-table > :nth-child(odd) {
+    -ms-grid-column: 1;
 }
 
-.activity .name {
-    vertical-align: middle;
+.two-column-table > :nth-child(even) {
+    -ms-grid-column: 2;
 }
 
-html.share header {
-    display: none;
+.row1 { -ms-grid-row: 1; }
+.row2 { -ms-grid-row: 2; }
+.row3 { -ms-grid-row: 3; }
+.row4 { -ms-grid-row: 4; }
+.row5 { -ms-grid-row: 5; }
+.row6 { -ms-grid-row: 6; }
+
+.borderless {
+    border: 0;
+    margin: 0;
+    padding: 0;
+}
+
+.fill {
+    width: 100%;
+    height: 100%;
+}
+
+.logo-background-color {
+    background: #67DB84;
 }

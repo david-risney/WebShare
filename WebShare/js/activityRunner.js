@@ -12,23 +12,13 @@
         runningActivity = false,
         activityOutputState = activityOutputStates.hidden,
         updateActivityElement = function (activityElement) {
-            var hide = false;
-            if (activityOutputState !== activityOutputStates.hidden) {
-                if (selectedActivityId !== undefined && activityElement.getAttribute("name") !== selectedActivityId) {
-                    hide = true;
-                }
-            }
-            if (hide) {
-                activityElement.classList.add("activity-hide");
+            var selected = activityElement.getAttribute("name") == selectedActivityId;
+            if (selected) {
+                activityElement.classList.add("selected");
             }
             else {
-                activityElement.classList.remove("activity-hide");
+                activityElement.classList.remove("selected");
             }
-        },
-        unhideActivities = function () {
-            Array.prototype.forEach.call(activityList.element.querySelectorAll("#activityList > *"), function (activity) {
-                activity.classList.remove("activity-hide");
-            });
         },
         hideNonSelectedActivities = function (selectedActivity) {
             Array.prototype.forEach.call(activityList.element.querySelectorAll("#activityList > *"), function (activity) {
@@ -80,13 +70,15 @@
 
             runningActivity = !runningActivity;
             if (runningActivity) {
-                hideNonSelectedActivities(event.currentTarget);
+                selectedActivityId = activityId;
+                document.body.parentElement.classList.add("selected");
                 transitionToActivityOutputState(activityOutputStates.loading);
                 activityOutput.src = activityStore.getItemById(activityId).toUri(shareState);
                 activityStore.noteItemUsage(activityId);
+                
             }
             else {
-                unhideActivities();
+                document.body.parentElement.classList.remove("selected");
                 transitionToActivityOutputState(activityOutputStates.hidden);
             }
         };
@@ -99,13 +91,13 @@
         activityList = activityListIn;
         activityOutput = activityOutputIn;
 
-        activityList.onitemsloaded = function (detail) {
+        activityList.onitemsreloaded = activityList.onitemsloaded = function (detail) {
             Array.prototype.forEach.call(detail.target.children, function (child) {
                 addClickHandler(child);
                 updateActivityElement(child);
             });
-        }
-        activityList.oniteminserted = function (detail) {
+        };
+        activityList.onitemchanged = activityList.onitemremoved = activityList.onitemmoved = activityList.oniteminserted = function (detail) {
             addClickHandler(detail.affectedElement);
             updateActivityElement(detail.affectedElement);
         };
