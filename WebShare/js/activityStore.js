@@ -1,11 +1,18 @@
 ﻿var ActivityStore = function () {
     var that = this,
         list = new WinJS.Binding.List(),
-        id = 0,
+        selectedId,
+        diskSerializer = new AsyncReentrancyGuard.PromiseSerializer(),
+        saveInTheBackground = function () {
+            diskSerializer.startLastAsync(function () {
+                that.saveAsync().done(undefined, function (e) {
+                    console.error(e);
+                });
+            });
+        },
         loadDefault = function (list) {
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Facebook",
                 description: "Post",
                 uriTemplate: "https://www.facebook.com/sharer/sharer.php?u=%s",
@@ -16,7 +23,6 @@
 
             list.push(new Activity({
                 type: Activity.types.selection,
-                id: "" + (id++),
                 name: "Twitter",
                 description: "Tweet message",
                 uriTemplate: "https://twitter.com/intent/tweet?text={selectionText}&tw_p=tweetbutton&url={uri}",
@@ -28,7 +34,6 @@
             // https://developers.google.com/+/web/share/
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Google+",
                 description: "Share link",
                 uriTemplate: "https://plus.google.com/share?url={uri}",
@@ -39,7 +44,6 @@
 
             list.push(new Activity({
                 type: Activity.types.selection,
-                id: "" + (id++),
                 name: "Tumblr",
                 description: "Post link",
                 uriTemplate: "http://www.tumblr.com/share/link?url={uri}&name={uriText}&description={selectionText}",
@@ -51,7 +55,6 @@
             // http://staff.tumblr.com/post/5338138025/tumblr-share-button
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Tumblr",
                 description: "Post video",
                 uriTemplate: "http://www.tumblr.com/share/video?embed={selectionHtml}&caption={uriText}",
@@ -62,7 +65,6 @@
 
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Reddit",
                 description: "Submit link",
                 uriTemplate: "http://reddit.com/submit?url={uri}&title={uriText}",
@@ -73,7 +75,6 @@
 
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "StumbleUpon",
                 description: "Submit link",
                 uriTemplate: "http://stumbleupon.com/submit?url={uri}&title={uriText}",
@@ -85,7 +86,6 @@
             // http://support.addthis.com/customer/portal/articles/381265-addthis-sharing-endpoints#.U3RK3fldX7E
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "AddThis",
                 description: "Share link",
                 uriTemplate: "http://api.addthis.com/oexchange/0.8/offer?url={uri}&title={uriText}&description={selectionText}",
@@ -97,7 +97,6 @@
             // https://developers.google.com/chart/infographics/docs/qr_codes
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Google",
                 description: "Show QR code",
                 uriTemplate: "http://chart.apis.google.com/chart?chs=320x240&cht=qr&chl={uri}&choe=UTF-8",
@@ -111,7 +110,6 @@
             /*
             list.push(new Activity({
                 type: Activity.types.document,
-                id: "" + (id++),
                 name: "Feedly",
                 description: "Subscribe to feed",
                 uriTemplate: "http://cloud.feedly.com/#subscription/feed/%s",
@@ -152,7 +150,8 @@
             newList.forEach(function (activity) {
                 list.push(activity);
             });
-        }).then(undefined, function() {
+        }).then(undefined, function (e) {
+            console.error("Error loading activities. Resetting to defaults: " + e);
             return that.resetAsync();
         });
     };
@@ -169,9 +168,38 @@
             return item.id === id;
         })[0];
     };
+    this.removeItemById = function (id) {
+        var idx = list.indexOf(that.getItemById(id));
+        list.splice(idx, 1);
+        saveInTheBackground();
+    };
+    this.addItem = function () {
+        var activityIdx = list.push(new Activity({
+            type: Activity.types.document,
+            name: "Example",
+            description: "Post",
+            uriTemplate: "about:blank?link={uri}&name={uriText}&description={selectionText}",
+            imageUri: "http://example.com/favicon.ico",
+            backgroundColor: "white",
+            usageCount: 0
+        }));
+        saveInTheBackground();
+        return list.getAt(activityIdx - 1).id;
+    };
     this.noteItemUsage = function (id) {
         that.getItemById(id).usageCount++;
         normalizeList(list);
-        that.saveAsync();
+        saveInTheBackground();
+    };
+    this.noteItemUpdate = function (id) {
+        //list.notifyMutated(list.indexOf(that.getItemById(id)));
+        list.notifyReload();
+        saveInTheBackground();
+    };
+    this.setSelectedId = function (id) {
+        selectedId = id;
+    };
+    this.getSelectedId = function () {
+        return selectedId;
     };
 };

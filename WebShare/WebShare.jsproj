@@ -73,6 +73,8 @@
     <Content Include="js\activity.js" />
     <Content Include="js\activityRunner.js" />
     <Content Include="js\activityStore.js" />
+    <Content Include="js\appBar.js" />
+    <Content Include="js\asyncReentrancyGuard.js" />
     <Content Include="js\settingsPane.js" />
     <Content Include="js\default.js" />
     <Content Include="css\default.css" />

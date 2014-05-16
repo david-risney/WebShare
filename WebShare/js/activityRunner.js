@@ -7,28 +7,17 @@
             return states;
         }, {}),
         shareState,
-        selectedActivityId,
         removeActivityOutputStateChangeHandler,
         runningActivity = false,
         activityOutputState = activityOutputStates.hidden,
         updateActivityElement = function (activityElement) {
-            var selected = activityElement.getAttribute("name") == selectedActivityId;
+            var selected = parseInt(activityElement.getAttribute("name"), 10) == activityStore.getSelectedId();
             if (selected) {
                 activityElement.classList.add("selected");
             }
             else {
                 activityElement.classList.remove("selected");
             }
-        },
-        hideNonSelectedActivities = function (selectedActivity) {
-            Array.prototype.forEach.call(activityList.element.querySelectorAll("#activityList > *"), function (activity) {
-                if (activity === selectedActivity) {
-                    activity.classList.remove("activity-hide");
-                }
-                else {
-                    activity.classList.add("activity-hide");
-                }
-            });
         },
         transitionToActivityOutputState = function (state) {
             var activityOutputProgress = document.getElementById("activityOutputProgress"),
@@ -65,22 +54,24 @@
                 activityOutputState = state;
             }
         },
-        activityClickHandler = function (event) {
-            var activityId = activityId = event.currentTarget.getAttribute("name");
-
+        activitySelectionHandler = function (activityId) {
             runningActivity = !runningActivity;
             if (runningActivity) {
-                selectedActivityId = activityId;
+                activityStore.setSelectedId(activityId);
                 document.body.parentElement.classList.add("selected");
                 transitionToActivityOutputState(activityOutputStates.loading);
                 activityOutput.src = activityStore.getItemById(activityId).toUri(shareState);
                 activityStore.noteItemUsage(activityId);
-                
+
             }
             else {
                 document.body.parentElement.classList.remove("selected");
                 transitionToActivityOutputState(activityOutputStates.hidden);
             }
+        },
+        activityClickHandler = function (event) {
+            var activityId = parseInt(event.currentTarget.getAttribute("name"), 10);
+            return activitySelectionHandler(activityId);
         };
 
     this.initializeAsync = function (shareStateIn, activityStoreIn, activityListIn, activityOutputIn) {
@@ -101,5 +92,11 @@
             addClickHandler(detail.affectedElement);
             updateActivityElement(detail.affectedElement);
         };
+    };
+    this.unselect = function () {
+        activitySelectionHandler(activityStore.getSelectedId());
+    };
+    this.select = function (id) {
+        activitySelectionHandler(id);
     };
 };

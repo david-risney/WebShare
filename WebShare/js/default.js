@@ -8,6 +8,7 @@
         activityStore = new ActivityStore(),
         activityRunner = new ActivityRunner(),
         shareState = new ShareState(),
+        appBar = new AppBar(),
         activityList;
 
     app.onactivated = function (args) {
@@ -26,6 +27,8 @@
                 activityStore,
                 activityList,
                 document.getElementById("activityOutput"));
+        }).then(function () {
+            return appBar.initializeAsync(activityStore, activityRunner, document.getElementById("appBar"), document.getElementById("editActivityFlyout"));
         }).then(function() {
             activityList.data = activityStore.getItems();
         }));

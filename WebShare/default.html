@@ -12,13 +12,15 @@
     <!-- WebShare references -->
     <link href="/css/default.css" rel="stylesheet" />
     <link rel="stylesheet" href="/css/animate.css">
+    <script src="/js/asyncReentrancyGuard.js"></script>
     <script src="/js/uriTemplate.js"></script>
     <script src="/js/activity.js"></script>
     <script src="/js/activityStore.js"></script>
     <script src="/js/activityRunner.js"></script>
     <script src="/js/shareState.js"></script>
-    <script src="/js/default.js"></script>
     <script src="/js/settingsPane.js"></script>
+    <script src="/js/appBar.js"></script>
+    <script src="/js/default.js"></script>
 </head>
 <body class="app-container table-layout borderless fill logo-background-color">
     <header class="table-top">
@@ -39,9 +41,9 @@
     </section>
     <footer>
         <section id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
-            <button data-win-control="WinJS.UI.AppBarCommand" data-section="global" data-win-options="{id:'cmdAdd',label:'Add',icon:'add', section:'global',tooltip:'Add activity'}"></button>
-            <button data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDelete',label:'Remove',icon:'delete', section:'selection',tooltip:'Remove activity'}"></button>
-            <button data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdEdit',label:'Edit',icon:'edit', section:'selection',tooltip:'Edit activity', flyout:select('#editActivityFlyout'), type:'flyout'}"></button>
+            <button id="addActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="global" data-win-options="{id:'cmdAdd',label:'Add',icon:'add', section:'global',tooltip:'Add activity'}"></button>
+            <button id="editActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdEdit',label:'Edit',icon:'edit', section:'selection',tooltip:'Edit activity', flyout:select('#editActivityFlyout'), type:'flyout'}"></button>
+            <button id="deleteActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDelete',label:'Remove',icon:'delete', section:'selection',tooltip:'Remove activity'}"></button>
         </section>
         <section id="editActivityFlyout" data-win-control="WinJS.UI.Flyout">
             <div class="two-column-table fill">
