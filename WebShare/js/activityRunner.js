@@ -62,7 +62,6 @@
                 transitionToActivityOutputState(activityOutputStates.loading);
                 activityOutput.src = activityStore.getItemById(activityId).toUri(shareState);
                 activityStore.noteItemUsage(activityId);
-
             }
             else {
                 document.body.parentElement.classList.remove("selected");
@@ -92,6 +91,22 @@
             addClickHandler(detail.affectedElement);
             updateActivityElement(detail.affectedElement);
         };
+
+        activityOutput.addEventListener("MSWebViewNavigationStart", function () {
+            if (activityOutputState === activityOutputStates.done) {
+                activityOutputProgress.style.display = "block";
+            }
+        });
+        activityOutput.addEventListener("MSWebViewContentLoading", function () {
+            if (activityOutputState === activityOutputStates.done) {
+                activityOutputProgress.style.display = "block";
+            }
+        });
+        activityOutput.addEventListener("MSWebViewNavigationCompleted", function () {
+            if (activityOutputState === activityOutputStates.done) {
+                activityOutputProgress.style.display = "none";
+            }
+        });
     };
     this.unselect = function () {
         activitySelectionHandler(activityStore.getSelectedId());

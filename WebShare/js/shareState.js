@@ -34,30 +34,30 @@
 
         return WinJS.Promise.join(results).then(function () {
             if (pageScraper) {
-                if (!that.selectionHtml && !that.selectionText && (pageScraper.selectionText || pageScraper.selectionImageUri)) {
-                    if (pageScraper.selectionText) {
-                        that.selectionText = pageScraper.selectionText;
-                        that.selectionHtml = textToHtml(pageScraper.selectionText);
-                        if (pageScraper.selectionImageUri) {
+                if (!that.selectionHtml && !that.selectionText && (pageScraper.selectionText[0] || pageScraper.selectionImageUri[0])) {
+                    if (pageScraper.selectionText[0]) {
+                        that.selectionText = pageScraper.selectionText[0];
+                        that.selectionHtml = textToHtml(pageScraper.selectionText[0]);
+                        if (pageScraper.selectionImageUri[0]) {
                             that.selectionText += " ";
                         }
                     }
-                    if (pageScraper.selectionImageUri) {
-                        that.selectionText += pageScraper.selectionImageUri;
-                        that.selectionHtml += "<img src=\"" + pageScraper.selectionImageUri +"\">";
+                    if (pageScraper.selectionImageUri[0]) {
+                        that.selectionText += pageScraper.selectionImageUri[0];
+                        that.selectionHtml += "<img src=\"" + pageScraper.selectionImageUri[0] +"\">";
                     }
                 }
 
-                if (!that.uriText && (pageScraper.siteName || pageScraper.pageName)) {
+                if (!that.uriText && (pageScraper.siteName[0] || pageScraper.pageName[0])) {
                     that.uriText = "";
-                    if (pageScraper.siteName) {
-                        that.uriText += pageScraper.siteName;
-                        if (pageScraper.pageName) {
+                    if (pageScraper.siteName[0]) {
+                        that.uriText += pageScraper.siteName[0];
+                        if (pageScraper.pageName[0]) {
                             that.uriText += " - ";
                         }
                     }
-                    if (pageScraper.pageName) {
-                        that.uriText += pageScraper.pageName;
+                    if (pageScraper.pageName[0]) {
+                        that.uriText += pageScraper.pageName[0];
                     }
                 }
             }

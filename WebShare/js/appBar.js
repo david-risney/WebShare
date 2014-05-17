@@ -1,12 +1,52 @@
 ﻿var AppBar = function () {
-    this.initializeAsync = function (activityStore, activityRunner, appBarElement, editActivityFlyoutElement) {
+    this.initializeAsync = function (activityStore, activityRunner, appBarElement, editActivityFlyoutElement, addActivityFlyoutElement) {
         var deleteActivityHandler = function () {
                 activityStore.removeItemById(activityStore.getSelectedId());
                 activityRunner.unselect();
             },
+            uriRemovePathQueryFragment = function (uriWithStuff) {
+                return Windows.Foundation.Uri(uriWithStuff, "/").absoluteCanonicalUri;
+            }
             addActivityHandler = function () {
-                var id = activityStore.addItem();
-                activityRunner.select(id);
+                var uriTemplate = addActivityFlyoutElement.querySelector("#addActivityFlyoutUriTemplate").value,
+                    progress = addActivityFlyoutElement.querySelector("#addActivityFlyoutProgress"),
+                    scraperPage = new PageScraper(),
+                    scraperSite = new PageScraper(),
+                    bestImageUri,
+                    addActivityPickImages = function () {
+                        var promise = WinJS.Promise.wrap();
+                        if (scraperPage.siteImageUri.length || scraperSite.siteImageUri.length) {
+                            promise = scraperPage.pickBestImageAsync(scraperPage.siteImageUri.concat(scraperSite.siteImageUri));
+                        }
+                        return promise.then(function (bestImageUriIn) {
+                            bestImageUri = bestImageUriIn;
+                            return addActivityPostScrape();
+                        }, addActivityPostScrape);
+                    },
+                    addActivityPostScrape = function () {
+                        var id = activityStore.addItem(),
+                            newActivity = activityStore.getItemById(id);
+
+                        newActivity.name = scraperSite.siteName[0] || scraperSite.pageName[0] || scraperPage.siteName[0] || scraperPage.pageName[0] || "Unknown";
+                        newActivity.description = scraperPage.pageName[0] || scraperPage.siteName[0] || scraperSite.pageName[0] || scraperSite.siteName[0] || "Unknown";
+                        newActivity.imageUri = bestImageUri || scraperPage.siteImageUri[0] || scraperSite.siteImageUri[0] || "";
+                        newActivity.backgroundColor = scraperPage.siteBackgroundColor[0] || scraperSite.siteBackgroundColor[0] || "";
+                        newActivity.uriTemplate = uriTemplate;
+
+                        activityStore.noteItemUpdate(id);
+
+                        activityRunner.select(id);
+                        document.getElementById("editActivity").click();
+
+                        addActivityFlyoutProgress.style.display = "none";
+                    };
+
+                addActivityFlyoutProgress.style.display = "block";
+                
+                return WinJS.Promise.join([
+                    scraperPage.scrapeAsync(uriTemplate),
+                    scraperSite.scrapeAsync(uriRemovePathQueryFragment(uriTemplate)),
+                ]).then(addActivityPickImages, addActivityPostScrape);
             },
             editActivityFlyoutHandlers = (function () {
                 var editActivityFlyoutUriTemplate = document.getElementById("editActivityFlyoutUriTemplate"),
@@ -45,7 +85,7 @@
             }());
 
         appBarElement.querySelector("#deleteActivity").addEventListener("click", deleteActivityHandler);
-        appBarElement.querySelector("#addActivity").addEventListener("click", addActivityHandler);
+        addActivityFlyoutElement.querySelector("#addActivityFlyoutAdd").addEventListener("click", addActivityHandler);
         editActivityFlyoutElement.querySelector("#editActivityFlyoutSave").addEventListener("click", editActivityFlyoutHandlers.saveHandler);
         editActivityFlyoutElement.winControl.addEventListener("beforeshow", editActivityFlyoutHandlers.openHandler);
     };

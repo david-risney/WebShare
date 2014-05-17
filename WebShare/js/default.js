@@ -28,7 +28,12 @@
                 activityList,
                 document.getElementById("activityOutput"));
         }).then(function () {
-            return appBar.initializeAsync(activityStore, activityRunner, document.getElementById("appBar"), document.getElementById("editActivityFlyout"));
+            return appBar.initializeAsync(
+                activityStore,
+                activityRunner,
+                document.getElementById("appBar"),
+                document.getElementById("editActivityFlyout"),
+                document.getElementById("addActivityFlyout"));
         }).then(function() {
             activityList.data = activityStore.getItems();
         }));
