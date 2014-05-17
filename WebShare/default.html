@@ -17,6 +17,7 @@
     <script src="/js/activity.js"></script>
     <script src="/js/activityStore.js"></script>
     <script src="/js/activityRunner.js"></script>
+    <script src="/js/pageScraper.js"></script>
     <script src="/js/shareState.js"></script>
     <script src="/js/settingsPane.js"></script>
     <script src="/js/appBar.js"></script>
@@ -35,9 +36,9 @@
             </div>
         </div>
     </section>
-    <section class="table-bottom">
-        <x-ms-webview class="fill animated fadeIn" style="display: none;" id="activityOutput"></x-ms-webview>
-        <progress id="activityOutputProgress" class="win-large win-ring fill" style="display: none;"></progress>
+    <section class="table-bottom center-container">
+        <x-ms-webview class="fill animated fadeIn center-content" style="display: none;" id="activityOutput"></x-ms-webview>
+        <progress id="activityOutputProgress" class="win-large win-ring center-content" style="display: none;"></progress>
     </section>
     <footer>
         <section id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
@@ -56,6 +57,5 @@
             </div>
         </section>
     </footer>
-    
 </body>
 </html>

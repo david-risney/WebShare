@@ -17,9 +17,9 @@
         }
 
         args.setPromise(WinJS.Promise.join([
-            activityStore.initializeAsync.bind(activityStore),
-            shareState.initializeAsync.bind(shareState, args.detail.shareOperation),
-            WinJS.UI.processAll.bind(WinJS.UI)
+            activityStore.initializeAsync(),
+            shareState.initializeAsync(args.detail.shareOperation),
+            WinJS.UI.processAll()
         ]).then(function() {
             activityList = document.getElementById("activityList").winControl;
             return activityRunner.initializeAsync(

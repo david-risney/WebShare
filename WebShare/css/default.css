@@ -58,9 +58,14 @@ x-ms-webview {
     padding-top: 20px;
 }
 
-x-ms-webview.fill {
+.share x-ms-webview.fill {
     width: calc(100% - 56px);
     height: calc(100% - 10px);
+}
+
+x-ms-webview.fill {
+    width: calc(100% - 150px);
+    height: calc(100% - 70px);
 }
 
 .table-layout {
@@ -119,6 +124,23 @@ x-ms-webview.fill {
 .fill {
     width: 100%;
     height: 100%;
+}
+
+.center-container {
+    display: -ms-grid;
+    -ms-grid-columns: 1fr auto 1fr;
+    -ms-grid-rows: 1fr auto 1fr;
+}
+
+.center-content {
+    -ms-grid-row: 2;
+    -ms-grid-column: 2;
+}
+.fill.center-content {
+    -ms-grid-row: 1;
+    -ms-grid-column: 1;
+    -ms-grid-row-span: 3;
+    -ms-grid-column-span: 3;
 }
 
 .logo-background-color {
