@@ -119,7 +119,7 @@
             */
         },
         normalizeList = function (list) {
-            list.sort(function (left, right) { return -((left.usageCount || 0) - (right.usageCount || 0)); });
+            // list.sort(function (left, right) { return -((left.usageCount || 0) - (right.usageCount || 0)); });
         },
         clearList = function (list) {
             list.splice(0, list.length);
@@ -131,12 +131,28 @@
     this.saveAsync = function () {
         var storageFile,
             serializedStateAsJson = JSON.stringify(list.map(function (item) {
-            return item.serialize();
-        }));
-        return Windows.Storage.ApplicationData.current.roamingFolder.createFileAsync("activities.json", Windows.Storage.CreationCollisionOption.replaceExisting).then(function (storageFileIn) {
-            storageFile = storageFileIn;
-            return Windows.Storage.FileIO.writeTextAsync(storageFile, serializedStateAsJson);
-        });
+                return item.serialize();
+            }));
+        if (serializedStateAsJson && serializedStateAsJson.length) {
+            return Windows.Storage.ApplicationData.current.localFolder.createFileAsync("activities.new.json", Windows.Storage.CreationCollisionOption.replaceExisting).then(function (storageFileIn) {
+                storageFile = storageFileIn;
+                return Windows.Storage.FileIO.writeTextAsync(storageFile, serializedStateAsJson);
+            }).then(function () {
+                return storageFile.getBasicPropertiesAsync();
+            }).then(function (basicProperties) {
+                if (basicProperties.size > 0) {
+                    return Windows.Storage.ApplicationData.current.roamingFolder.createFileAsync("activities.json", Windows.Storage.CreationCollisionOption.replaceExisting);
+                }
+                else {
+                    console.error("Not keeping new zero sized file.");
+                }
+            }).then(function (realStorageFile) {
+                return storageFile.moveAndReplaceAsync(realStorageFile);
+            });
+        }
+        else {
+            console.error("Error serializaing state.");
+        }
     };
     this.loadAsync = function () {
         console.log(Windows.Storage.ApplicationData.current.roamingFolder.path);
@@ -188,7 +204,12 @@
     };
     this.noteItemUsage = function (id) {
         that.getItemById(id).usageCount++;
-        normalizeList(list);
+        var item = that.getItemById(id),
+            idx = list.indexOf(item);
+        list.splice(idx, 1);
+        list.splice(0, 0, item);
+        //normalizeList(list);
+        list.notifyReload();
         saveInTheBackground();
     };
     this.noteItemUpdate = function (id) {

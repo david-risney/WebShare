@@ -1,7 +1,8 @@
 ﻿(function initSettingsPane() {
     var settingsPane = Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView(),
         analytics = { trackEvent: function () { } },
-        uriBase = "https://raw.githubusercontent.com/david-risney/WebShare/master/";
+        uriBase = "http://deletethis.net/dave/dev/cloudShare/about.html",
+        appName = "Cloud Share";
 
     settingsPane.addEventListener(
         "commandsrequested",
@@ -23,7 +24,7 @@
                     function () {
                         var dialog = new Windows.UI.Popups.MessageDialog(
                             "Would you like to reset all of your application's state back to what it was when you first installed?",
-                            "WebShare");
+                            appName);
                         dialog.commands.append(new Windows.UI.Popups.UICommand("Reset State", function () {
                             AppState.resetState();
                             analytics.trackEvent("UI", "click", "resetState", 1);

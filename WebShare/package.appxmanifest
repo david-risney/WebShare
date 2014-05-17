@@ -1,8 +1,8 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="WebShare" Version="1.0.0.0" Publisher="CN=Dave" />
+  <Identity Name="CloudShare" Version="1.0.0.0" Publisher="CN=Dave" />
   <Properties>
-    <DisplayName>WebShare</DisplayName>
+    <DisplayName>Cloud Share</DisplayName>
     <PublisherDisplayName>Dave</PublisherDisplayName>
     <Logo>images\storelogo.png</Logo>
   </Properties>
@@ -15,8 +15,8 @@
   </Resources>
   <Applications>
     <Application Id="App" StartPage="default.html">
-      <m2:VisualElements DisplayName="WebShare" Description="WebShare" ForegroundText="light" BackgroundColor="#67DB84" Square150x150Logo="images\Square150x150Logo.png" Square30x30Logo="images\Square30x30Logo.png">
-        <m2:DefaultTile ShortName="WebShare" Square310x310Logo="images\Square310x310Logo.png" DefaultSize="square150x150Logo" Wide310x150Logo="images\Wide310x150Logo.png" Square70x70Logo="images\Square70x70Logo.png">
+      <m2:VisualElements DisplayName="Cloud Share" Description="Cloud Share helps you share from your Windows Store apps to your favorite social media websites." ForegroundText="light" BackgroundColor="#67DB84" Square150x150Logo="images\Square150x150Logo.png" Square30x30Logo="images\Square30x30Logo.png">
+        <m2:DefaultTile ShortName="Cloud Share" Square310x310Logo="images\Square310x310Logo.png" DefaultSize="square150x150Logo" Wide310x150Logo="images\Wide310x150Logo.png" Square70x70Logo="images\Square70x70Logo.png">
           <m2:ShowNameOnTiles>
             <m2:ShowOn Tile="square150x150Logo" />
             <m2:ShowOn Tile="wide310x150Logo" />
