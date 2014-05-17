@@ -55,6 +55,7 @@
     <AppxManifest Include="package.appxmanifest">
       <SubType>Designer</SubType>
     </AppxManifest>
+    <Content Include="about.html" />
     <Content Include="css\animate.css" />
     <Content Include="default.html" />
     <Content Include="images\BadgeLogo.scale-180.png" />

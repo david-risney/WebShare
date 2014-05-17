@@ -1,6 +1,7 @@
 ﻿(function initSettingsPane() {
     var settingsPane = Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView(),
-        analytics = { trackEvent: function () { } };
+        analytics = { trackEvent: function () { } },
+        uriBase = "https://raw.githubusercontent.com/david-risney/WebShare/master/";
 
     settingsPane.addEventListener(
         "commandsrequested",
@@ -10,12 +11,12 @@
             if (applicationCommands.size == 0) {
                 applicationCommands.append(new Windows.UI.ApplicationSettings.SettingsCommand("about", "About",
                     function () {
-                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("http://deletethis.net/dave/dev/webShare/#about"));
+                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(uriBase + "about.html#about"));
                         analytics.trackEvent("UI", "click", "about", 1);
                     }));
                 applicationCommands.append(new Windows.UI.ApplicationSettings.SettingsCommand("privacyPolicy", "Privacy Policy",
                     function () {
-                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("http://deletethis.net/dave/dev/webShare/#privacy"));
+                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(uriBase + "about.html#privacy"));
                         analytics.trackEvent("UI", "click", "privacyPolicy", 1);
                     }));
                 applicationCommands.append(new Windows.UI.ApplicationSettings.SettingsCommand("resetState", "Reset Application State", 
@@ -32,7 +33,7 @@
                     }));
                 applicationCommands.append(new Windows.UI.ApplicationSettings.SettingsCommand("help", "Help",
                     function () {
-                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri("http://deletethis.net/dave/dev/webShare/#help"));
+                        Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(uriBase + "about.html#help"));
                         analytics.trackEvent("UI", "click", "help", 1);
                     }));
             }

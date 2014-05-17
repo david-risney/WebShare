@@ -16,11 +16,11 @@
             document.body.parentElement.classList.add("share");
         }
 
-        args.setPromise(activityStore.initializeAsync().then(function () {
-            return WinJS.UI.processAll();
-        }).then(function () {
-            return shareState.initializeAsync(args.detail.shareOperation);
-        }).then(function() {
+        args.setPromise(WinJS.Promise.join([
+            activityStore.initializeAsync.bind(activityStore),
+            shareState.initializeAsync.bind(shareState, args.detail.shareOperation),
+            WinJS.UI.processAll.bind(WinJS.UI)
+        ]).then(function() {
             activityList = document.getElementById("activityList").winControl;
             return activityRunner.initializeAsync(
                 shareState,
@@ -35,7 +35,7 @@
     };
 
     app.oncheckpoint = function () {
-        activityStore.saveAsync();
+        activityStore.saveAsync().done(undefined, function (e) { console.error(e); });
     }
 
     app.start();
