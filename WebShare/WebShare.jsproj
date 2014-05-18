@@ -1,6 +1,22 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug (Share)|AnyCPU">
+      <Configuration>Debug (Share)</Configuration>
+      <Platform>AnyCPU</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (Share)|ARM">
+      <Configuration>Debug (Share)</Configuration>
+      <Platform>ARM</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (Share)|x64">
+      <Configuration>Debug (Share)</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug (Share)|x86">
+      <Configuration>Debug (Share)</Configuration>
+      <Platform>x86</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Debug|AnyCPU">
       <Configuration>Debug</Configuration>
       <Platform>AnyCPU</Platform>
@@ -76,6 +92,7 @@
     <Content Include="js\activityStore.js" />
     <Content Include="js\appBar.js" />
     <Content Include="js\asyncReentrancyGuard.js" />
+    <Content Include="js\imageUtils.js" />
     <Content Include="js\pageScraper.js" />
     <Content Include="js\settingsPane.js" />
     <Content Include="js\default.js" />

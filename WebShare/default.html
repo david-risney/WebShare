@@ -20,31 +20,33 @@
     <script src="/js/pageScraper.js"></script>
     <script src="/js/shareState.js"></script>
     <script src="/js/settingsPane.js"></script>
+    <script src="/js/imageUtils.js"></script>
     <script src="/js/appBar.js"></script>
     <script src="/js/default.js"></script>
 </head>
-<body class="app-container table-layout borderless fill logo-background-color">
-    <header class="table-top">
+<body class="app-container app-table-layout borderless fill logo-background-color">
+    <header class="app-table-top hide-block-in-share">
         <h1>Cloud Share</h1>
     </header>
-    <section class="table-middle">
-        <div id="activityList" data-win-control="WinJS.UI.Repeater">
-            <div class="activity" data-win-bind="name: id">
-                <img class="icon" data-win-bind="src: imageUri; style.background: backgroundColor" />
-                <div class="name" data-win-bind="textContent: name"></div>
-                <div class="description" data-win-bind="textContent: description"></div>
-            </div>
+    <div id="activityList" class="app-table-list" data-win-control="WinJS.UI.Repeater">
+        <div class="activity" data-win-bind="name: id">
+            <img class="icon" data-win-bind="src: imageUri; style.background: backgroundColor" />
+            <div class="name" data-win-bind="textContent: name"></div>
+            <div class="description" data-win-bind="textContent: description"></div>
         </div>
-    </section>
-    <section class="table-bottom center-container">
-        <x-ms-webview class="fill animated fadeIn center-content" style="display: none;" id="activityOutput"></x-ms-webview>
+    </div>
+    <button id="cancelSelection" class="app-table-control-1 hide-block-unless-selected win-command" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdCancelSelection',label:'Cancel',icon:'cancel', section:'selection',tooltip:'Cancel sharing'}"></button>
+    <button id="doneSharing" class="app-table-control-2 hide-block-unless-selected-and-share win-command" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDoneSharing',label:'Done',icon:'accept', section:'selection',tooltip:'Done sharing'}"></button>
+    <button id="openInBrowser" class="app-table-control-3 hide-block-unless-selected win-command" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdOpenInBrowser',label:'Browser',icon:'globe', section:'selection',tooltip:'Open in browser'}"></button>
+    <x-ms-webview class="fill animated fadeIn app-table-output hide-block-unless-selected" id="activityOutput"></x-ms-webview>
+    <section class="fill app-table-output center-container hide-block-unless-selected">
         <progress id="activityOutputProgress" class="win-large win-ring center-content" style="display: none; z-index: 10;"></progress>
     </section>
     <footer>
         <section id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
             <button id="addActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="global" data-win-options="{id:'cmdAdd',label:'Add',icon:'add', section:'global',tooltip:'Add activity', flyout:select('#addActivityFlyout'), type:'flyout'}"></button>
-            <button id="editActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdEdit',label:'Edit',icon:'edit', section:'selection',tooltip:'Edit activity', flyout:select('#editActivityFlyout'), type:'flyout'}"></button>
-            <button id="deleteActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDelete',label:'Remove',icon:'delete', section:'selection',tooltip:'Remove activity'}"></button>
+            <button class="hide-block-unless-selected" id="editActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdEdit',label:'Edit',icon:'edit', section:'selection',tooltip:'Edit activity', flyout:select('#editActivityFlyout'), type:'flyout'}"></button>
+            <button class="hide-block-unless-selected" id="deleteActivity" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDelete',label:'Remove',icon:'delete', section:'selection',tooltip:'Remove activity'}"></button>
         </section>
         <section id="editActivityFlyout" data-win-control="WinJS.UI.Flyout">
             <div class="two-column-table six-row-table fill">

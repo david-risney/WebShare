@@ -1,11 +1,31 @@
 ﻿var AppBar = function () {
-    this.initializeAsync = function (activityStore, activityRunner, appBarElement, editActivityFlyoutElement, addActivityFlyoutElement) {
+    this.initializeAsync = function (shareState, activityStore, activityRunner, appBarElement, editActivityFlyoutElement, addActivityFlyoutElement, cancelButton, doneButton, browserButton) {
         var deleteActivityHandler = function () {
                 activityStore.removeItemById(activityStore.getSelectedId());
                 activityRunner.unselect();
             },
+            cancelHandler = function () {
+                activityRunner.unselect();
+            },
+            doneHandler = function () {
+                activityRunner.unselect();
+                shareState.completeSharingAsync(activityStore.getItemById(activityStore.getSelectedId())).done();
+            },
+            browserHandler = function () {
+                Windows.System.Launcher.launchUriAsync(new Windows.Foundation.Uri(activityOutput.src)).then(doneHandler, doneHandler).done();
+            },
             uriRemovePathQueryFragment = function (uriWithStuff) {
-                return Windows.Foundation.Uri(uriWithStuff, "/").absoluteCanonicalUri;
+                var uriWithoutStuff = new Windows.Foundation.Uri(uriWithStuff, "/"),
+                    uriWithoutStuffAsString;
+
+                try {
+                    uriWithoutStuffAsString = uriWithoutStuff.absoluteCanonicalUri;
+                }
+                catch (e) {
+                    uriWithoutStuffAsString = uriWithoutStuff.absoluteUri;
+                }
+
+                return uriWithoutStuffAsString;
             }
             addActivityHandler = function () {
                 var uriTemplate = addActivityFlyoutElement.querySelector("#addActivityFlyoutUriTemplate").value,
@@ -16,7 +36,7 @@
                     addActivityPickImages = function () {
                         var promise = WinJS.Promise.wrap();
                         if (scraperPage.siteImageUri.length || scraperSite.siteImageUri.length) {
-                            promise = scraperPage.pickBestImageAsync(scraperPage.siteImageUri.concat(scraperSite.siteImageUri));
+                            promise = ImageUtils.pickBestImageAsync(scraperPage.siteImageUri.concat(scraperSite.siteImageUri));
                         }
                         return promise.then(function (bestImageUriIn) {
                             bestImageUri = bestImageUriIn;
@@ -88,5 +108,8 @@
         addActivityFlyoutElement.querySelector("#addActivityFlyoutAdd").addEventListener("click", addActivityHandler);
         editActivityFlyoutElement.querySelector("#editActivityFlyoutSave").addEventListener("click", editActivityFlyoutHandlers.saveHandler);
         editActivityFlyoutElement.winControl.addEventListener("beforeshow", editActivityFlyoutHandlers.openHandler);
+        cancelButton.addEventListener("click", cancelHandler);
+        doneButton.addEventListener("click", doneHandler);
+        browserButton.addEventListener("click", browserHandler);
     };
 };

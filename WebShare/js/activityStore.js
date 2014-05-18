@@ -174,6 +174,7 @@
     this.resetAsync = function () {
         clearList(list);
         loadDefault(list);
+        list.notifyReload();
         return that.saveAsync();
     };
     this.getItems = function () {
@@ -183,6 +184,12 @@
         return list.filter(function (item) {
             return item.id === id;
         })[0];
+    };
+    this.getItemByUriTemplate = function (uriTemplate) {
+        var matches = list.filter(function (item) {
+            return item.uriTemplate === uriTemplate;
+        });
+        return matches.length > 0 && matches[0];
     };
     this.removeItemById = function (id) {
         var idx = list.indexOf(that.getItemById(id));

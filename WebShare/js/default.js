@@ -15,12 +15,18 @@
         if (args.detail.kind === activation.ActivationKind.shareTarget) {
             document.body.parentElement.classList.add("share");
         }
+        console.log("Starting activation " + args.detail.kind);
 
         args.setPromise(WinJS.Promise.join([
-            activityStore.initializeAsync(),
-            shareState.initializeAsync(args.detail.shareOperation),
             WinJS.UI.processAll()
-        ]).then(function() {
+        ]).then(function () {
+            console.log("Activation point -1");
+            return shareState.initializeAsync(args.detail.shareOperation);
+        }).then(function() {
+            console.log("Activation point 0");
+            return activityStore.initializeAsync();
+        }).then(function(){
+            console.log("Activation point 1");
             activityList = document.getElementById("activityList").winControl;
             return activityRunner.initializeAsync(
                 shareState,
@@ -28,14 +34,29 @@
                 activityList,
                 document.getElementById("activityOutput"));
         }).then(function () {
+            console.log("Activation point 2");
             return appBar.initializeAsync(
+                shareState,
                 activityStore,
                 activityRunner,
                 document.getElementById("appBar"),
                 document.getElementById("editActivityFlyout"),
-                document.getElementById("addActivityFlyout"));
-        }).then(function() {
+                document.getElementById("addActivityFlyout"),
+                document.getElementById("cancelSelection"),
+                document.getElementById("doneSharing"),
+                document.getElementById("openInBrowser"));
+        }).then(function () {
+            console.log("Activation complete");
             activityList.data = activityStore.getItems();
+
+            if (args.detail.shareOperation && args.detail.shareOperation.quickLinkId) {
+                try {
+                    activityRunner.select(activityStore.getItemByUriTemplate(args.detail.shareOperation.quickLinkId).id);
+                }
+                catch (e) {
+                    console.error("Error selecting quick link id: " + args.detail.shareOperation.quickLinkId);
+                }
+            }
         }));
     };
 

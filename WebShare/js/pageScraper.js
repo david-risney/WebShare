@@ -1,6 +1,14 @@
 ﻿var PageScraper = (function () { 
     var uriNormalizer = function (documentUri, relativeUri) {
-        return Windows.Foundation.Uri(documentUri, relativeUri).absoluteCanonicalUri;
+        var uri = new Windows.Foundation.Uri(documentUri, relativeUri),
+            uriStr;
+        try {
+            uriStr = uri.absoluteCanonicalUri;
+        }
+        catch (e) {
+            uriStr = uri.absoluteUri;
+        }
+        return uriStr;
     },
         htmlNormalizer = function (documentUri, htmlIn) {
             return htmlIn;
@@ -54,47 +62,6 @@
                 scrapeList.forEach(applyScrape.bind(null, that, scrapeDoc, uri));
                 return that;
             });
-        };
-        this.pickBestImageAsync = function (uriList) {
-            var uriResultList = [],
-                signal = new SignalPromise(),
-                count = 0,
-                incrementAndCheckCompletionCount = function () {
-                    if (++count === uriList.length) {
-                        uriResultList.sort(function (left, right) {
-                            if (left.success !== right.success) {
-                                return left.success ? -1 : 1;
-                            }
-                            else if (left.success) {
-                                return right.result - left.result;
-                            }
-                            else {
-                                return 0;
-                            }
-                        });
-                        signal.complete(uriResultList[0].uri);
-                    }
-                };
-            
-            uriList.map(function (uri) {
-                var signal = new SignalPromise(),
-                    img = document.createElement("img");
-                img.onerror = function () { signal.error(); };
-                img.onload = function () { signal.complete(img.width * img.height); };
-                img.src = uri;
-
-                return signal.promise;
-            }).forEach(function (promise, idx) {
-                promise.done(function (result) {
-                    uriResultList[idx] = { uri: uriList[idx], success: true, result: result };
-                    incrementAndCheckCompletionCount();
-                }, function (error) {
-                    uriResultList[idx] = { uri: uriList[idx], success: fail, result: error };
-                    incrementAndCheckCompletionCount();
-                });
-            });
-
-            return signal.promise;
         };
     };
 }());
