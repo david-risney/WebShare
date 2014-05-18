@@ -52,6 +52,7 @@
                 usageCount: .3
             }));
 
+            /*
             // http://staff.tumblr.com/post/5338138025/tumblr-share-button
             list.push(new Activity({
                 type: Activity.types.document,
@@ -62,6 +63,7 @@
                 backgroundColor: "#2c4762",
                 usageCount: .3
             }));
+            */
 
             list.push(new Activity({
                 type: Activity.types.document,
@@ -83,17 +85,6 @@
                 usageCount: .2
             }));
 
-            // https://developers.google.com/chart/infographics/docs/qr_codes
-            list.push(new Activity({
-                type: Activity.types.document,
-                name: "Google",
-                description: "Show QR code",
-                uriTemplate: "http://chart.apis.google.com/chart?chs=320x240&cht=qr&chl={uri}&choe=UTF-8",
-                imageUri: "https://developers.google.com/_static/8b217e58ab/images/apple-touch-icon.png",
-                backgroundColor: "",
-                usageCount: 0
-            }));
-
             list.push(new Activity({
                 "type": "document",
                 "name": "Blogger",
@@ -113,6 +104,17 @@
             list.push(new Activity({ "type": "document", "id": 14, "name": "LiveJournal", "description": "Post an Entry", "imageUri": "http://l-stat.livejournal.net/img/apple-touch-icon.png?v=6037", "backgroundColor": "white", "uriTemplate": "http://www.livejournal.com/update.bml?url={uri}&subject={uriText}", "usageCount": 0.2 }));
 
             list.push(new Activity({ "type": "document", "id": 0, "name": "Digg", "description": "Submit a link", "imageUri": "http://digg.com/static/images/windows-tile-144x144.png", "backgroundColor": "white", "uriTemplate": "http://digg.com/submit?url={uri}", "usageCount": 0.2 }));
+
+            // https://developers.google.com/chart/infographics/docs/qr_codes
+            list.push(new Activity({
+                type: Activity.types.document,
+                name: "Google",
+                description: "Show QR code",
+                uriTemplate: "http://chart.apis.google.com/chart?chs=320x240&cht=qr&chl={uri}&choe=UTF-8",
+                imageUri: "https://developers.google.com/_static/8b217e58ab/images/apple-touch-icon.png",
+                backgroundColor: "",
+                usageCount: 0
+            }));
 
             // http://support.addthis.com/customer/portal/articles/381265-addthis-sharing-endpoints#.U3RK3fldX7E
             list.push(new Activity({

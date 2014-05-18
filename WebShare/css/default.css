@@ -83,7 +83,6 @@ html.selected .activity.selected {
     float: left;
     vertical-align: middle;
     text-align: center;
-    display: inline-block;
 }
 
 .activity .icon {
