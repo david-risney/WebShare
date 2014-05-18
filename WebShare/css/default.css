@@ -35,8 +35,7 @@
 }
 
 .border {
-    border: 0;
-    border-top: 5px solid black;
+    border-top: 3px solid black;
 }
 
 .app-table-top-border {

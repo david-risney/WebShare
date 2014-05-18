@@ -95,8 +95,8 @@
             }, function () {
                 console.error("Failure getting activity image for quicklink.");
 
-                return Windows.ApplicationModel.Package.current.installedLocation.createFileAsync("images\\smalllogo.scale-180.png", CreationCollisionOption.OpenIfExists).then(function (file) {
-                    quickLink.thumbnail = RandomAccessStreamReference.createFromFile(file);
+                return Windows.ApplicationModel.Package.current.installedLocation.createFileAsync("images\\smalllogo.scale-180.png", Windows.Storage.CreationCollisionOption.openIfExists).then(function (file) {
+                    quickLink.thumbnail = Windows.Storage.Streams.RandomAccessStreamReference.createFromFile(file);
                     shareOperation.reportStarted();
                     shareOperation.reportCompleted(quickLink);
                 }, function () {
@@ -104,9 +104,6 @@
                     shareOperation.reportStarted();
                     shareOperation.reportCompleted();
                 });
-
-                shareOperation.reportStarted();
-                shareOperation.reportCompleted();
             });
         }
 
