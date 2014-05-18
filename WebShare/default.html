@@ -41,8 +41,10 @@
     <button id="doneSharing" class="app-table-control-2 hide-block-unless-selected-and-share win-command" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdDoneSharing',label:'Done',icon:'accept', section:'selection',tooltip:'Done sharing'}"></button>
     <button id="openInBrowser" class="app-table-control-3 hide-block-unless-selected win-command" data-win-control="WinJS.UI.AppBarCommand" data-section="selection" data-win-options="{id:'cmdOpenInBrowser',label:'Browser',icon:'globe', section:'selection',tooltip:'Open in browser'}"></button>
     <x-ms-webview class="fill animated fadeIn app-table-output hide-block-unless-selected" id="activityOutput"></x-ms-webview>
-    <section class="fill app-table-output center-container hide-block-unless-selected">
-        <progress id="activityOutputProgress" class="win-large win-ring center-content" style="display: none; z-index: 10;"></progress>
+    <section class="fill app-table-output hide-block-unless-selected">
+        <div class="fill center-container">
+            <progress id="activityOutputProgress" class="win-large win-ring center-content" style="display: none; z-index: 10;"></progress>
+        </div>
     </section>
     <footer>
         <section id="appBar" data-win-control="WinJS.UI.AppBar" data-win-options="">
