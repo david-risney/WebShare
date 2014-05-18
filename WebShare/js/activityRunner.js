@@ -18,6 +18,8 @@
             else {
                 activityElement.classList.remove("selected");
             }
+            var icon = activityElement.querySelector(".icon");
+            icon.onerror = function () { icon.removeAttribute("src"); };
         },
         transitionToActivityOutputState = function (state) {
             var activityOutputProgress = document.getElementById("activityOutputProgress"),

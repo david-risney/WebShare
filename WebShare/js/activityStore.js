@@ -147,7 +147,9 @@
                     console.error("Not keeping new zero sized file.");
                 }
             }).then(function (realStorageFile) {
-                return storageFile.moveAndReplaceAsync(realStorageFile);
+                if (realStorageFile) {
+                    return storageFile.moveAndReplaceAsync(realStorageFile);
+                }
             });
         }
         else {

@@ -92,8 +92,18 @@
 
                 shareOperation.reportStarted();
                 shareOperation.reportCompleted(quickLink);
-            }, function (xhr) {
-                console.error("Failure getting image for quicklink.");
+            }, function () {
+                console.error("Failure getting activity image for quicklink.");
+
+                return Windows.ApplicationModel.Package.current.installedLocation.createFileAsync("images\\smalllogo.scale-180.png", CreationCollisionOption.OpenIfExists).then(function (file) {
+                    quickLink.thumbnail = RandomAccessStreamReference.createFromFile(file);
+                    shareOperation.reportStarted();
+                    shareOperation.reportCompleted(quickLink);
+                }, function () {
+                    console.error("Failure getting my own image for quicklink.");
+                    shareOperation.reportStarted();
+                    shareOperation.reportCompleted();
+                });
 
                 shareOperation.reportStarted();
                 shareOperation.reportCompleted();
