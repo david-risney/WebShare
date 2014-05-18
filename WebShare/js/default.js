@@ -8,6 +8,7 @@
         activityStore = new ActivityStore(),
         activityRunner = new ActivityRunner(),
         shareState = new ShareState(),
+        settingsPane = new SettingsPane(),
         appBar = new AppBar(),
         activityList;
 
@@ -46,6 +47,8 @@
                 document.getElementById("doneSharing"),
                 document.getElementById("openInBrowser"));
         }).then(function () {
+            return settingsPane.initializeAsync(activityStore);
+        }).then(function() {
             console.log("Activation complete");
             activityList.data = activityStore.getItems();
 
