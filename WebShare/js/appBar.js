@@ -90,6 +90,7 @@
 
                         activityRunner.unselect();
                         editActivityFlyoutElement.winControl.hide();
+                        console.log(JSON.stringify(activity.serialize()));
                     },
                     openHandler: function () {
                         var activityId = activityStore.getSelectedId(),

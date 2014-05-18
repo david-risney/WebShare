@@ -59,7 +59,7 @@
                 uriResultList[idx] = { uri: uriList[idx], success: true, result: result };
                 incrementAndCheckCompletionCount();
             }, function (error) {
-                uriResultList[idx] = { uri: uriList[idx], success: fail, result: error };
+                uriResultList[idx] = { uri: uriList[idx], success: false, result: error };
                 incrementAndCheckCompletionCount();
             });
         });

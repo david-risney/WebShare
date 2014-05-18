@@ -49,6 +49,21 @@
     -ms-grid-column: 2;
 }
 
+.item-list {
+    display: -ms-flexbox;
+    -ms-flex-direction: column;
+    -ms-flex-wrap: wrap;
+    -ms-overflow-style:-ms-autohiding-scrollbar;
+    overflow-x: auto;
+    overflow-y:hidden;
+}
+
+html.share .item-list {
+    -ms-flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
 .activity {
     padding-top: 20px;
 }
@@ -123,6 +138,11 @@ html.share.selected body.app-table-layout {
 }
 .app-table-top-logo > img {
     height: 64px;
+}
+@media all and (max-width: 553px) {
+    .app-table-top-logo {
+        display: none;
+    }
 }
 
 .app-table-list {
