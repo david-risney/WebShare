@@ -24,10 +24,13 @@
     <script src="/js/appBar.js"></script>
     <script src="/js/default.js"></script>
 </head>
-<body class="app-container app-table-layout borderless fill logo-background-color">
-    <header class="app-table-top hide-block-in-share">
-        <h1>Cloud Share</h1>
-    </header>
+<body class="app-container app-table-layout borderless fill">
+    <header class="app-table-top-background bottomer fill logo-background-color"></header>
+    <h1 class="app-table-top hide-block-in-share fill">Cloud Share</h1>
+    <div class="app-table-top-logo hide-block-in-share" style="text-align: right;">
+        <img src="images/storelogo.png"/>
+    </div>
+    <hr class="fill border app-table-top-border borderless"/>
     <div id="activityList" class="app-table-list" data-win-control="WinJS.UI.Repeater">
         <div class="activity" data-win-bind="name: id">
             <div class="center-container icon-container" data-win-bind="style.background: backgroundColor">
@@ -43,7 +46,7 @@
     <x-ms-webview class="fill animated fadeIn app-table-output hide-block-unless-selected" id="activityOutput"></x-ms-webview>
     <section class="fill app-table-output hide-block-unless-selected">
         <div class="fill center-container">
-            <progress id="activityOutputProgress" class="win-large win-ring center-content" style="display: none; z-index: 10;"></progress>
+            <progress id="activityOutputProgress" class="win-large win-ring center-content topper" style="display: none;"></progress>
         </div>
     </section>
     <footer>
