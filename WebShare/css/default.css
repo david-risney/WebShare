@@ -73,7 +73,7 @@ html.selected .activity {
 }
 
 html.selected .activity.selected {
-    display: inherit;
+    display: block;
 }
 
 .activity .icon-container {
