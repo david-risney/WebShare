@@ -64,7 +64,11 @@
     };
 
     app.oncheckpoint = function () {
-        activityStore.saveAsync().done(undefined, function (e) { console.error(e); });
+        activityStore.saveAsync().done(function () {
+            console.log("checkpoint save done");
+        }, function (e) {
+            console.error("checkpoint save failed: " + e);
+        });
     }
 
     app.start();

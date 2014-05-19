@@ -59,7 +59,9 @@
         this.scrapeAsync = function (uri) {
             return WinJS.xhr({ responseType: "document", url: uri }).then(function (xhr) {
                 var scrapeDoc = xhr.response;
-                scrapeList.forEach(applyScrape.bind(null, that, scrapeDoc, uri));
+                if (scrapeDoc) {
+                    scrapeList.forEach(applyScrape.bind(null, that, scrapeDoc, uri));
+                }
                 return that;
             });
         };
