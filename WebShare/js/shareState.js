@@ -6,20 +6,28 @@
         };
 
     this.initializeAsync = function (shareOperationIn) {
-        var results = [],
+        var result = WinJS.Promise.wrap(),
             pageScraper;
 
         shareOperation = shareOperationIn;
 
         if (shareOperation) {
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.text)) {
-                results.push(shareOperation.data.getTextAsync().then(function (text) {
+                console.log("has text");
+                result = result.then(function () {
+                    return shareOperation.data.getTextAsync();
+                }).then(function (text) {
+                    console.log("got text");
                     that.selectionText = text;
-                }));
+                });
             }
 
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink)) {
-                results.push(shareOperation.data.getWebLinkAsync().then(function (webLink) {
+                console.log("has weblink");
+                result = result.then(function () {
+                    return shareOperation.data.getWebLinkAsync();
+                }).then(function (webLink) {
+                    console.log("got weblink");
                     try {
                         that.uri = webLink.absoluteCanonicalUri;
                     }
@@ -27,17 +35,24 @@
                         that.uri = webLink.absoluteUri;
                         console.log("Error reading absoluteCanonicalUri of " + webLink.rawUri);
                     }
-                    
+
                     pageScraper = new PageScraper();
                     return pageScraper.scrapeAsync(that.uri);
-                }));
+                }).then(function (result) {
+                    console.log("scraped page");
+                    return WinJS.Promise.wrap(result);
+                });
             }
 
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.html)) {
-                results.push(shareOperation.data.getHtmlFormatAsync().then(function (htmlFormat) {
+                console.log("has html");
+                result = result.then(function () {
+                    return shareOperation.data.getHtmlFormatAsync();
+                }).then(function (htmlFormat) {
+                    console.log("got html");
                     // Extract the HTML fragment from the HTML format 
                     that.selectionHtml = Windows.ApplicationModel.DataTransfer.HtmlFormatHelper.getStaticFragment(htmlFormat);
-                }));
+                });
             }
         }
         else {
@@ -46,7 +61,7 @@
             that.selectionText = "This is an example of a page for sharing. Use Cloud Share through the Share Charm to share your own content.";
         }
 
-        return WinJS.Promise.join(results).then(function () {
+        return result.then(function () {
             if (pageScraper) {
                 if (!that.selectionHtml && !that.selectionText && (pageScraper.selectionText[0] || pageScraper.selectionImageUri[0])) {
                     if (pageScraper.selectionText[0]) {
