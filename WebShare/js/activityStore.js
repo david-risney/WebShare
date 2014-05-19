@@ -105,6 +105,13 @@
 
             list.push(new Activity({ "type": "document", "id": 0, "name": "Digg", "description": "Submit a link", "imageUri": "http://digg.com/static/images/windows-tile-144x144.png", "backgroundColor": "white", "uriTemplate": "http://digg.com/submit?url={uri}", "usageCount": 0.2 }));
 
+            // https://delicious.com/tools
+            // https://delicious.com/branding
+            list.push(new Activity({ "type": "document", "id": 13, "name": "Delicious", "description": "Save link", "imageUri": "https://delicious.com/img/logo.png", "backgroundColor": "white", "uriTemplate": "https://delicious.com/save?v=5&provider=cloudshare&noui&jump=close&url={uri}&title={uriText}", "usageCount": 2 }));
+
+            // https://developer.linkedin.com/documents/share-linkedin
+            list.push(new Activity({ "type": "document", "id": 14, "name": "LinkedIn", "description": "Share link", "imageUri": "http://s.c.lnkd.licdn.com/scds/common/u/images/logos/linkedin/logo-in-win8-tile-144_v1.png", "backgroundColor": "#0077B5", "uriTemplate": "http://www.linkedin.com/shareArticle?mini=true&url={uri}&title={uriText}&summary={selectionText}", "usageCount": 1 }));
+
             // https://developers.google.com/chart/infographics/docs/qr_codes
             list.push(new Activity({
                 type: Activity.types.document,

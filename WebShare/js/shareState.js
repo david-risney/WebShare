@@ -40,6 +40,11 @@
                 }));
             }
         }
+        else {
+            that.uri = "http://example.com/";
+            that.uriText = "Example web page";
+            that.selectionText = "This is an example of a page for sharing. Use Cloud Share through the Share Charm to share your own content.";
+        }
 
         return WinJS.Promise.join(results).then(function () {
             if (pageScraper) {
