@@ -16,13 +16,14 @@
 
         this.toUri = function (shareState) {
             var uri = that.uriTemplate;
-            uri = UriTemplate.printfTemplateToUri(uri, shareState.uri || shareState.uriText || shareState.selectionText);
+            uri = UriTemplate.printfTemplateToUri(uri, shareState.uri || shareState.uriText || shareState.selectionText || shareState.selectionImageUri);
             uri = UriTemplate.uriTemplateToUri(uri, {
                 uri: shareState.uri,
                 uriText: shareState.uriText,
                 uriHtml: shareState.uriHtml,
                 selectionText: shareState.selectionText,
-                selectionHtml: shareState.selectionHtml
+                selectionHtml: shareState.selectionHtml,
+                selectionImageUri: shareState.selectionImageUri
             });
             return uri;
         }

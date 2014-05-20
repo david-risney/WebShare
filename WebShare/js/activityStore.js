@@ -3,6 +3,12 @@
         list = new WinJS.Binding.List(),
         selectedId,
         diskSerializer = new AsyncReentrancyGuard.PromiseSerializer(),
+        resetRawAsync = function () {
+            clearList(list);
+            addDefaults(list);
+            list.notifyReload();
+            return saveRawAsync();
+        },
         loadRawAsync = function () {
             console.log("Starting load from " + Windows.Storage.ApplicationData.current.roamingFolder.path + " activities.json ...");
             return Windows.Storage.ApplicationData.current.roamingFolder.getItemAsync("activities.json").then(function (storageFile) {
@@ -20,7 +26,7 @@
                 console.log("Finished loading from file.");
             }, function (e) {
                 console.error("Error loading activities. Resetting to defaults: " + e);
-                return that.resetAsync();
+                return resetRawAsync();
             });
         },
         saveRawAsync = function () {
@@ -107,7 +113,6 @@
                 usageCount: .3
             }));
 
-            /*
             // http://staff.tumblr.com/post/5338138025/tumblr-share-button
             list.push(new Activity({
                 type: Activity.types.document,
@@ -118,7 +123,11 @@
                 backgroundColor: "#2c4762",
                 usageCount: .3
             }));
-            */
+
+            list.push(new Activity({
+                "type": "document", "name": "Tumblr", "description": "Post photo", "imageUri": "https://secure.assets.tumblr.com/images/msfavicon.png?_v=1264dab417c706a8be8f641f391ed007", "backgroundColor": "#2c4762",
+                "uriTemplate": "http://www.tumblr.com/share/photo?source={selectionImageUri}&caption={uriText}&clickthru={uri}", "usageCount": 1
+            }));
 
             list.push(new Activity({
                 type: Activity.types.document,
@@ -219,10 +228,9 @@
         });
     };
     this.resetAsync = function () {
-        clearList(list);
-        addDefaults(list);
-        list.notifyReload();
-        return that.saveAsync();
+        return diskSerializer.startLastAsync(function () {
+            return resetRawAsync();
+        });
     };
     this.getItems = function () {
         return list;

@@ -1,6 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Package xmlns="http://schemas.microsoft.com/appx/2010/manifest" xmlns:m2="http://schemas.microsoft.com/appx/2013/manifest">
-  <Identity Name="CloudShare" Version="1.0.0.0" Publisher="CN=Dave" />
+  <Identity Name="CloudShareR" Version="1.0.0.0" Publisher="CN=Dave" />
   <Properties>
     <DisplayName>Cloud Share</DisplayName>
     <PublisherDisplayName>Dave</PublisherDisplayName>

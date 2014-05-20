@@ -6,6 +6,8 @@
         },
         pageScrapeHandler = function (pageScraper, selectionImageUri) {
             if (pageScraper) {
+                that.selectionImageUri = selectionImageUri;
+
                 if (!that.selectionText && (pageScraper.selectionText[0] || selectionImageUri)) {
                     that.selectionText = "";
                     if (pageScraper.selectionText[0]) {

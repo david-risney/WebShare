@@ -59,7 +59,7 @@
 
             elements.forEach(function (element) {
                 var property = element[scrapeEntry.property] || element.getAttribute(scrapeEntry.property);
-                if (property !== undefined) {
+                if (property) {
                     if (scrapeEntry.normalizer) {
                         property = scrapeEntry.normalizer(uri, property);
                     }
