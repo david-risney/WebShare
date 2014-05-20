@@ -3,6 +3,45 @@
         shareOperation,
         textToHtml = function (text) {
             return text.replace(/</g, "&lt;");
+        },
+        pageScrapeHandler = function (pageScraper, selectionImageUri) {
+            if (pageScraper) {
+                if (!that.selectionText && (pageScraper.selectionText[0] || selectionImageUri)) {
+                    that.selectionText = "";
+                    if (pageScraper.selectionText[0]) {
+                        that.selectionText += pageScraper.selectionText[0];
+                        if (selectionImageUri) {
+                            that.selectionText += " ";
+                        }
+                    }
+                    if (selectionImageUri) {
+                        that.selectionText += selectionImageUri;
+                    }
+                }
+
+                if (!that.selectionHtml && (pageScraper.selectionText[0] || selectionImageUri)) {
+                    that.selectionHtml = "";
+                    if (pageScraper.selectionText[0]) {
+                        that.selectionHtml += textToHtml(pageScraper.selectionText[0]);
+                    }
+                    if (selectionImageUri) {
+                        that.selectionHtml += "<img src=\"" + selectionImageUri + "\" />";
+                    }
+                }
+
+                if (!that.uriText && (pageScraper.siteName[0] || pageScraper.pageName[0])) {
+                    that.uriText = "";
+                    if (pageScraper.siteName[0]) {
+                        that.uriText += pageScraper.siteName[0];
+                        if (pageScraper.pageName[0]) {
+                            that.uriText += " - ";
+                        }
+                    }
+                    if (pageScraper.pageName[0]) {
+                        that.uriText += pageScraper.pageName[0];
+                    }
+                }
+            }
         };
 
     this.initializeAsync = function (shareOperationIn) {
@@ -62,34 +101,17 @@
         }
 
         return result.then(function () {
+            var result = WinJS.Promise.wrap();
             if (pageScraper) {
-                if (!that.selectionHtml && !that.selectionText && (pageScraper.selectionText[0] || pageScraper.selectionImageUri[0])) {
-                    if (pageScraper.selectionText[0]) {
-                        that.selectionText = pageScraper.selectionText[0];
-                        that.selectionHtml = textToHtml(pageScraper.selectionText[0]);
-                        if (pageScraper.selectionImageUri[0]) {
-                            that.selectionText += " ";
-                        }
-                    }
-                    if (pageScraper.selectionImageUri[0]) {
-                        that.selectionText += pageScraper.selectionImageUri[0];
-                        that.selectionHtml += "<img src=\"" + pageScraper.selectionImageUri[0] +"\">";
-                    }
-                }
-
-                if (!that.uriText && (pageScraper.siteName[0] || pageScraper.pageName[0])) {
-                    that.uriText = "";
-                    if (pageScraper.siteName[0]) {
-                        that.uriText += pageScraper.siteName[0];
-                        if (pageScraper.pageName[0]) {
-                            that.uriText += " - ";
-                        }
-                    }
-                    if (pageScraper.pageName[0]) {
-                        that.uriText += pageScraper.pageName[0];
-                    }
+                if (pageScraper.selectionImageUri.length) {
+                    result = ImageUtils.pickBestImageAsync(pageScraper.selectionImageUri);
                 }
             }
+            return result;
+        }).then(function (selectionImageUri) {
+            pageScrapeHandler(pageScraper, selectionImageUri);
+        }).then(function () {
+            console.log(that);
         });
     };
 
