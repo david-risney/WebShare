@@ -67,6 +67,5 @@
         return signal.promise;
     };
 
-
     return ImageUtils;
 }());

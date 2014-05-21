@@ -4,6 +4,24 @@
         textToHtml = function (text) {
             return text.replace(/</g, "&lt;");
         },
+        retryOnTimeoutAsync = function (retries, timeout, promiseFn, promiseName) {
+            var timedout = false;
+
+            return WinJS.Promise.any([
+                promiseFn(),
+                WinJS.Promise.timeout(timeout).then(function () { timedout = true; })
+            ]).then(function (result) {
+                if (timedout) {
+                    if (retries > 0) {
+                        return retryOnTimeoutAsync(retries - 1, timeout, promiseFn);
+                    } else {
+                        throw new Error("Failed running " + promiseName);
+                    }
+                } else {
+                    return result.value;
+                }  
+            });
+        },
         pageScrapeHandler = function (pageScraper, selectionImageUri) {
             if (pageScraper) {
                 that.selectionImageUri = selectionImageUri;
@@ -55,8 +73,9 @@
         if (shareOperation) {
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.text)) {
                 console.log("has text");
+                
                 result = result.then(function () {
-                    return shareOperation.data.getTextAsync();
+                    return retryOnTimeoutAsync(3, 250, function () { return shareOperation.data.getTextAsync(); }, "getTextAsync");
                 }).then(function (text) {
                     console.log("got text");
                     that.selectionText = text;
@@ -66,7 +85,7 @@
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.webLink)) {
                 console.log("has weblink");
                 result = result.then(function () {
-                    return shareOperation.data.getWebLinkAsync();
+                    return retryOnTimeoutAsync(3, 250, function () { return shareOperation.data.getWebLinkAsync(); }, "getWebLinkAsync");
                 }).then(function (webLink) {
                     console.log("got weblink");
                     try {
@@ -88,7 +107,7 @@
             if (shareOperation.data.contains(Windows.ApplicationModel.DataTransfer.StandardDataFormats.html)) {
                 console.log("has html");
                 result = result.then(function () {
-                    return shareOperation.data.getHtmlFormatAsync();
+                    return retryOnTimeoutAsync(3, 250, function () { return shareOperation.data.getHtmlFormatAsync(); }, "getHtmlFormatAsync");
                 }).then(function (htmlFormat) {
                     console.log("got html");
                     // Extract the HTML fragment from the HTML format 
