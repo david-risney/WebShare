@@ -2,7 +2,7 @@
     this.initializeAsync = function (activityStore) {
         var settingsPane = Windows.UI.ApplicationSettings.SettingsPane.getForCurrentView(),
             analytics = { trackEvent: function () { } },
-            uriBase = "http://deletethis.net/dave/dev/cloudShare/about.html",
+            uriBase = "http://deletethis.net/dave/dev/cloudShare/",
             appName = "Cloud Share";
 
         settingsPane.addEventListener(
